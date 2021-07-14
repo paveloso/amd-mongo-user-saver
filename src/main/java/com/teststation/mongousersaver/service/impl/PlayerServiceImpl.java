@@ -13,7 +13,7 @@ public class PlayerServiceImpl implements PlayerService {
     private PlayerRepository playerRepo;
 
     @Override
-    public Player savePlayer(Player player) {
-        return playerRepo.insert(player);
+    public void savePlayer(Player player) {
+        playerRepo.insert(player);
     }
 }

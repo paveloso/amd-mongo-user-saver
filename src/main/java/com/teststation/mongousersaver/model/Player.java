@@ -3,6 +3,7 @@ package com.teststation.mongousersaver.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,6 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 @Document(collection = "leaguePlayers")
 public class Player implements Serializable {
 
@@ -37,16 +39,5 @@ public class Player implements Serializable {
     }
 
     public Player() {
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                ", age=" + age +
-                ", creationDate=" + creationDate +
-                '}';
     }
 }

@@ -1,8 +1,6 @@
 package com.teststation.mongousersaver.config;
 
-import com.teststation.mongousersaver.service.PlayerService;
 import com.teststation.mongousersaver.service.RabbitMqListener;
-import com.teststation.mongousersaver.service.impl.PlayerServiceImpl;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,46 +15,46 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
 
     @Value("${rabbit.queue}")
-    String queueName;
+    private String queueName;
 
     @Value("${rabbit.exchange}")
-    String exchange;
+    private String exchange;
 
     @Value("${rabbit.routingkey}")
     private String routingkey;
 
     @Value("${spring.rabbitmq.username}")
-    String username;
+    private String username;
 
     @Value("${spring.rabbitmq.password}")
     private String password;
 
     @Bean
-    Queue queue() {
+    public Queue queue() {
         return new Queue(queueName, false);
     }
 
     @Bean
-    DirectExchange exchange() {
+    public DirectExchange exchange() {
         return new DirectExchange(exchange);
     }
 
     @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
+    public Binding binding(Queue queue, DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingkey);
     }
 
     @Bean
-    PlayerService playerService() {
-        return new PlayerServiceImpl();
+    public RabbitMqListener rabbitMqListener() {
+        return new RabbitMqListener();
     }
 
     @Bean
-    MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
+    public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
         simpleMessageListenerContainer.setQueues(queue());
-        simpleMessageListenerContainer.setMessageListener(new RabbitMqListener(playerService()));
+        simpleMessageListenerContainer.setMessageListener(rabbitMqListener());
         return simpleMessageListenerContainer;
 
     }

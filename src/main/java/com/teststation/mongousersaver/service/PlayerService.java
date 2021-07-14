@@ -4,6 +4,6 @@ import com.teststation.mongousersaver.model.Player;
 
 public interface PlayerService {
 
-    Player savePlayer(Player player);
+    void savePlayer(Player player);
 
 }
